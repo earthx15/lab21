@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cmath>
 using namespace std;
+#define M_PI       3.14159265358979323846
 
 class ComplexNumber{				
 	public:
@@ -28,8 +29,76 @@ ComplexNumber ComplexNumber::operator-(const ComplexNumber &c){
 	return ComplexNumber(real-c.real,imag-c.imag);
 }
 
-//Write your code here
+ComplexNumber ComplexNumber::operator*(const ComplexNumber &c){
+	return ComplexNumber((real*c.real)-(imag*c.imag),(real*c.imag)+(imag*c.real));
+}
 
+ComplexNumber ComplexNumber::operator/(const ComplexNumber &c){
+	return ComplexNumber(((real*c.real)+(imag*c.imag))/(pow(c.real,2)+pow(c.imag,2)),((imag*c.real)-(real*c.imag))/(pow(c.real,2)+pow(c.imag,2)));
+}
+
+double ComplexNumber::abs(){
+	return pow((real*real)+(imag*imag),0.5);
+}
+
+double ComplexNumber::angle(){
+	return  atan2 (imag,real) * 180 / M_PI;
+}
+
+bool ComplexNumber::operator==(const ComplexNumber &c){
+	if (c.real == real && imag == c.imag)
+	{
+		return true;
+	}else return false;
+}
+
+ComplexNumber operator+(double s,const ComplexNumber &c){
+	return ComplexNumber(s+c.real,c.imag);
+}
+
+ComplexNumber operator-(double s,const ComplexNumber &c){
+	return ComplexNumber(s-c.real,-c.imag);
+}
+
+ComplexNumber operator*(double s,const ComplexNumber &c){
+	return ComplexNumber((s*c.real),(s*c.imag));
+}
+
+ComplexNumber operator/(double s,const ComplexNumber &c){
+	return ComplexNumber(c.real/(pow(c.real,2)+pow(c.imag,2)),-c.imag/(pow(c.real,2)+pow(c.imag,2)));
+}
+
+bool operator==(double s,const ComplexNumber &c){
+	if (c.real == s && 0 == c.imag)
+	{
+		return true;
+	}else return false;
+}
+
+ostream & operator<<(ostream &os,const ComplexNumber &u){
+	if (u.real==0)
+	{
+		if (u.imag>0)
+		{
+			return os <<u.imag<<"i";
+		}else if (u.imag==0)
+		{
+			return os << u.real;
+		}else{
+			return os <<u.imag<<"i";
+		}
+	}else{
+		if (u.imag>0)
+		{
+			return os << u.real<<"+"<<u.imag<<"i";
+		}else if (u.imag==0)
+		{
+			return os << u.real;
+		}else{
+			return os << u.real<<u.imag<<"i";
+		}
+	}
+}
 int main(){
 	ComplexNumber a(1.5,2),b(3.2,-2.5),c(-1,1.2);	
 	cout << a << "\n";
@@ -69,6 +138,7 @@ int main(){
 	cout << (ComplexNumber(1,1) == ComplexNumber(1,2)) << "\n";
 	cout << (ComplexNumber(1,1) == 1) << "\n";
 	cout << (0 == ComplexNumber()) << "\n";
+	return 0;
 }
 
 
